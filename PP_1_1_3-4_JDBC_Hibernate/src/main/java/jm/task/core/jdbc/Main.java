@@ -8,11 +8,10 @@ import jm.task.core.jdbc.util.Util;
 
 import java.util.List;
 
+import static jdk.internal.org.jline.utils.Colors.s;
+
 public class Main {
     public static void main(String[] args) {
-        // реализуйте алгоритм здесь
-
-
         Util.getConnection();
         UserDao userDao = new UserDaoJDBCImpl();
 

@@ -49,13 +49,13 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         String sql = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
 
-        try (Connection con = Util.getConnection();
-             PreparedStatement preparedStatement = con.prepareStatement(sql);) {
+        try (Connection connection = Util.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
             preparedStatement.executeUpdate();
-            con.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,11 +64,11 @@ public class UserDaoJDBCImpl implements UserDao {
     public void removeUserById(long id) {
         String sql = "DELETE FROM users WHERE id = (?) ";
 
-        try (Connection conn = Util.getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);) {
+        try (Connection connection = Util.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
-            conn.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,13 +84,11 @@ public class UserDaoJDBCImpl implements UserDao {
             ResultSet resSet = stmt.executeQuery(sql);) {
 
            while (resSet.next()) {
-               long id = resSet.getInt("id");
                String name = resSet.getString("name");
                String lastName = resSet.getString("lastName");
                byte age = resSet.getByte("age");
 
-               User user1 = new User(id, name, lastName, age);
-               usersList.add(user1);
+               usersList.add(new User(name, lastName, age));
            }
             connection.close();
         } catch (SQLException e) {
